@@ -1,0 +1,2 @@
+
+ffmpeg -y -headers "Cookie: licenseUID=BE798867E95E7Bebda090f92d088a9" -i $1 -ss 00:05 -c copy $2.mp4

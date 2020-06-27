@@ -1,0 +1,5 @@
+#!/bin/bash
+rsync -a --quiet /home/tomyang/.config /home/tomyang/temp/backup/
+rsync -a --quiet /home/tomyang/doc /home/tomyang/temp/backup/
+rsync -a --quiet /home/tomyang/dev /home/tomyang/temp/backup/
+rsync -a --quiet /home/tomyang/.local /home/tomyang/temp/backup/

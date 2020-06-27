@@ -1,0 +1,2 @@
+ssh sshd@tomyang001.mynetgear.com 
+#-t /opt/bin/bash

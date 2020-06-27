@@ -1,0 +1,1 @@
+cat *.ts|ffmpeg -i - -c copy ../../$1.mp4

@@ -1,0 +1,1 @@
+ffmpeg -f x11grab -video_size 1920x1080 -framerate 60 -init_hw_device qsv=hw -filter_hw_device hw -i :0.0 -vf format=p010,hwupload=extra_hw_frames=64 -c:v hevc_qsv -global_quality 18 -look_ahead 1 -preset veryfast -profile:v main10 $NOW.mkv

@@ -1,0 +1,3 @@
+#cropvalue=$(ffmpeg -ss 5:00 -i bluray:$1 -t 1 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)
+#1:filename 2:subtrack 3:crop:y 4:audiotrack 5:crop:x
+ffmpeg -init_hw_device qsv=hw -filter_hw_device hw -i bluray:${1:?"input the fucking filename!" -map v:0 -map a:${4:-0} -map s:${2:-0} -vf crop=${5:-1920}:${3:-1080},format=p010,hwupload=extra_hw_frames=64 -c:v hevc_qsv -global_quality 18 -look_ahead 1  -preset veryfast -profile:v main10 -c:a aac -ac 2 -ab 128k -c:s copy -disposition:s:0 default "/home/tomyang/Downloads/${1%AVC*}HEVC.10bit.mkv"

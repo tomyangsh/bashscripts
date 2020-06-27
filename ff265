@@ -1,0 +1,2 @@
+cropvalue=$(ffmpeg -ss 10:00 -i $1 -t 1 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)
+ffmpeg -vaapi_device /dev/dri/renderD128 -i $1 -map v:0 -map a:0 -map $2 -vf $cropvalue,format=p010,hwupload -c:v hevc_vaapi -qp 18 -profile:v main10 -c:a aac -ac 2 -ab 128k -c:s copy -disposition:s:0 default "${1%.*}-tmp.mkv"

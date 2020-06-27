@@ -1,0 +1,4 @@
+for i in "$@"; do
+	~/dev/iKOA $i
+	rclone move ~/Downloads/$i gsuite:/dmm/
+done

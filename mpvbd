@@ -1,0 +1,1 @@
+mpv bd:// --bluray-device=$PWD

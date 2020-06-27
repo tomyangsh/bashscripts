@@ -1,0 +1,5 @@
+#!/bin/bash
+for ((i=0; 1<20; i++))
+do 
+	ffmpeg -y -f x11grab -framerate 1/30 -t 00:30:00 -video_size 1920x1080 -i :0.0  %02d.png
+done

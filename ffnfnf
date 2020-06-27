@@ -1,0 +1,1 @@
+ffmpeg -init_hw_device qsv=hw -filter_hw_device hw -i $1 -vf subtitles=$2,hwupload=extra_hw_frames=64 -c:v h264_qsv -preset veryfast -global_quality 20 -c:a aac -ac 2 -ab 128k ~/Downloads/${1%.WEB*}.mp4
