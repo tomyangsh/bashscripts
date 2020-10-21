@@ -1,0 +1,1 @@
+mpv dvd://0 dvd://1 dvd://2 dvd://3 dvd://4 --dvd-device="$1"
