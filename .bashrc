@@ -67,18 +67,11 @@ xterm*|rxvt*)
     ;;
 esac
 
-export PATH=/home/tomyang/.local/bin:$PATH
 export NOW=$(date +%Y-%m-%d-%H-%M-%S)
-export SSH_AUTH_SOCK DEFAULT="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 #if [ ! -n "$DISPLAY" ]; then export MPV_HOME=~/.config/mpvc/; else unset MPV_HOME;fi
-
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
-fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-fi
 
 alias diff='diff -Naur'
 alias makepkg='makepkg -sirc'
-alias ls='ls -alF --color=auto'
+alias ls='ls -alhF --color=auto'
+alias sysuser="systemctl --user"
+alias juser="journalctl -n 20 --user -u"
