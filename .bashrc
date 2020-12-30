@@ -68,10 +68,17 @@ xterm*|rxvt*)
 esac
 
 export NOW=$(date +%Y-%m-%d-%H-%M-%S)
+export GPG_TTY=$(tty)
 #if [ ! -n "$DISPLAY" ]; then export MPV_HOME=~/.config/mpvc/; else unset MPV_HOME;fi
 
 alias diff='diff -Naur'
 alias makepkg='makepkg -sirc'
 alias ls='ls -alhF --color=auto'
 alias sysuser="systemctl --user"
-alias juser="journalctl -n 20 --user -u"
+alias juser="journalctl -n 20 --user"
+alias bb='BBDown -mt -tv -hevc'
+alias su='su -'
+alias dmmc='(export PATH=/usr/local/bin:$PATH && cd /home/tomyang/dev/dmmc && exec ~/dev/dmmc/DMMCatcher)'
+alias bilili='bilili -y --playlist-type m3u --use-mirrors --danmaku ass'
+alias m3u='/usr/bin/ls *.mp4 *.mkv>0.m3u'
+alias ikoa='https_proxy=socks5://127.0.0.1:1080/ dev/ikoa/iKOA'
