@@ -74,11 +74,11 @@ export GPG_TTY=$(tty)
 alias diff='diff -Naur'
 alias makepkg='makepkg -sirc'
 alias ls='ls -alhF --color=auto'
-alias sysuser="systemctl --user"
-alias juser="journalctl -n 20 --user"
 alias bb='BBDown -mt -tv -hevc'
 alias su='su -'
-alias dmmc='(export PATH=/usr/local/bin:$PATH && cd /home/tomyang/dev/dmmc && exec ~/dev/dmmc/DMMCatcher)'
-alias bilili='bilili -y --playlist-type m3u --use-mirrors --danmaku ass'
 alias m3u='/usr/bin/ls *.mp4 *.mkv>0.m3u'
 alias ikoa='https_proxy=socks5://127.0.0.1:1080/ dev/ikoa/iKOA'
+alias ytfzf='ytfzf -t'
+alias showmyip='dig o-o.myaddr.l.google.com TXT @216.239.32.10'
+alias mktorrent='mktorrent -pdvl 22 -s "BLU" -a https://blutopia.xyz/announce/e9143d49b11da1003ab54d77021ae841'
+alias translatesub='python ~/dev/python/deepl-translate.py'
