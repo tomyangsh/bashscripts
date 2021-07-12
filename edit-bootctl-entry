@@ -5,4 +5,4 @@ version=$1
 
 sed -i "s/version .*/version ${version}/" /boot/loader/entries/debian.conf
 sed -i "s/linux .*/linux vmlinuz-${version}/" /boot/loader/entries/debian.conf
-sed -i "s/initrd .*/initrd initramfs-${version}.img/" /boot/loader/entries/debian.conf
+sed -i "s/initrd .*/initrd initrd.img-${version}/" /boot/loader/entries/debian.conf
