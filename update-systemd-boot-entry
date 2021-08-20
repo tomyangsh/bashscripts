@@ -1,4 +1,5 @@
 #!/bin/sh
+#/etc/kernel/postinst.d/update-systemd-boot-entry
 set -e
 
 version=$1
