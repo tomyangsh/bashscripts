@@ -1,5 +1,5 @@
 #!/bin/sh
 set -e
 
-rm -r /debian/lib/modules/*
-rsync -AHXal /lib/modules/ /debian/lib/modules/
+rm -r /debian/lib/modules/* || true
+cp -r --reflink /lib/modules/* /debian/lib/modules/
