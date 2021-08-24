@@ -40,32 +40,7 @@ esac
 # should be on the output of commands, not on the prompt
 #force_color_prompt=yes
 
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+PS1='[\u@\h \W]\$ '
 
 export NOW=$(date +%Y-%m-%d-%H-%M-%S)
 export GPG_TTY=$(tty)
@@ -73,12 +48,13 @@ export GPG_TTY=$(tty)
 
 alias diff='diff -Naur'
 alias makepkg='makepkg -sirc'
-alias ls='ls -alhF --color=auto'
+alias ll='ls -alhF --color=auto'
 alias bb='BBDown -mt -tv -hevc'
 alias su='su -'
 alias m3u='/usr/bin/ls *.mp4 *.mkv>0.m3u'
 alias ikoa='https_proxy=socks5://127.0.0.1:1080/ dev/ikoa/iKOA'
 alias ytfzf='ytfzf -t'
 alias showmyip='dig o-o.myaddr.l.google.com TXT @216.239.32.10'
-alias mktorrent='mktorrent -pdvl 22 -s "BLU" -a https://blutopia.xyz/announce/e9143d49b11da1003ab54d77021ae841'
+alias mktorrent='mktorrent -pdvl 22'
 alias translatesub='python ~/dev/python/deepl-translate.py'
+alias less='bat'
