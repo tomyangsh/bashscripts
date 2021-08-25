@@ -40,7 +40,7 @@ esac
 # should be on the output of commands, not on the prompt
 #force_color_prompt=yes
 
-PS1='[\u@\h \W]\$ '
+PS1='\u@\h:\w\$ '
 
 export NOW=$(date +%Y-%m-%d-%H-%M-%S)
 export GPG_TTY=$(tty)
