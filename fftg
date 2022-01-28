@@ -1,0 +1,23 @@
+#!/bin/bash
+
+LEN=$(($(ffprobe -i $1 -show_entries format=duration -v quiet -of csv="p=0" | awk -F '.' '{print $1}')/60+1))
+if (( LEN < 60 ))
+then
+LEN=60
+fi
+if (( $(($(stat --format=%s $1)/1024/1024)) > 2200 ))
+then
+if [ -f "${1%mkv}srt" ]
+then
+ffmpeg -hwaccel qsv -c:v h264_qsv -i "$1" -i "${1%mkv}srt" -map v:0 -map a:0 -map 1 -c:v h264_qsv -b:v $((2*1024**3*8/LEN/60/1000-200))K -look_ahead 1 -c:a aac -ac 2 -b:a 128k -c:s mov_text -metadata:s:s language=chi -fs 2080M "${1%mkv}mp4"
+else
+ffmpeg -hwaccel qsv -c:v h264_qsv -i "$1" -map v:0 -map a:0 -map s:$2? -c:v h264_qsv -b:v $((2*1024**3*8/LEN/60/1000-200))K -look_ahead 1 -c:a aac -ac 2 -b:a 128k -c:s mov_text -fs 2080M "${1%mkv}mp4"
+fi
+else
+if [ -f "${1%mkv}srt" ]
+then
+ffmpeg -i "$1" -i "${1%mkv}srt" -map v:0 -map a:0 -map 1 -c:v copy -c:a aac -ac 2 -b:a 128k -c:s mov_text -metadata:s:s language=chi -fs 2080M ${1%mkv}mp4
+else
+ffmpeg -i "$1" -map v:0 -map a:0 -map s:$2? -c:v copy -c:a aac -ac 2 -b:a 128k -c:s mov_text -fs 2080M ${1%mkv}mp4
+fi
+fi
