@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -41,20 +41,29 @@ esac
 #force_color_prompt=yes
 
 PS1='\u@\h:\w\$ '
-
-export NOW=$(date +%Y-%m-%d-%H-%M-%S)
-export GPG_TTY=$(tty)
+HISTTIMEFORMAT="%Y-%m-%d %T "
+NOW=$(date +%Y-%m-%d-%H-%M-%S)
+GPG_TTY=$(tty)
+PATH=/home/tomyang/.local/bin:/usr/bin:/usr/sbin
 #if [ ! -n "$DISPLAY" ]; then export MPV_HOME=~/.config/mpvc/; else unset MPV_HOME;fi
+
+
+play() {
+	mpv "$@" &
+}
 
 alias diff='diff -Naur'
 alias makepkg='makepkg -sirc'
 alias ll='ls -alhF --color=auto'
-alias bb='BBDown -mt -tv -hevc'
 alias su='su -'
-alias m3u='/usr/bin/ls *.mp4 *.mkv>0.m3u'
-alias ikoa='https_proxy=socks5://127.0.0.1:1080/ dev/ikoa/iKOA'
 alias ytfzf='ytfzf -t'
 alias showmyip='dig o-o.myaddr.l.google.com TXT @216.239.32.10'
-alias mktorrent='mktorrent -pdvl 22'
+alias mktorrent='transmission-create -p -s 4096'
 alias translatesub='python ~/dev/python/deepl-translate.py'
-alias less='bat'
+alias upload='python ~/dev/uploadbot/uploadbot.py'
+alias mpv='play'
+alias pipu='pip freeze --user > ~/dev/test/pip.txt ; sed -i s/==.*//g ~/dev/test/pip.txt ; pip install -U -r ~/dev/test/pip.txt'
+alias fars='curl -F c=@- https://fars.ee'
+
+if [ ! -n "$MC_SID" ]; then eval "$(starship init bash)"; fi
+alias forward='python ~/dev/uploadbot/forward.py'
