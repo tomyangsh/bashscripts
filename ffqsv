@@ -1,4 +1,32 @@
-#cropvalue=$(ffmpeg -ss 5:00 -i bluray:$1 -t 1 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)
-#1:filename 2:subtrack 3:crop:y 4:quality 5:audiotrack 6:playlist 7:crop:x
-#ffmpeg -init_hw_device qsv=hw -filter_hw_device hw -playlist ${5:--1} -i bluray:${1} -map v:0 -map a:${4:-0} -map s:${2:-0} -vf crop=${6:-1920}:${3:-1080},format=p010,hwupload=extra_hw_frames=64 -c:v hevc_qsv -global_quality 18 -look_ahead 1  -preset veryfast -profile:v main10 -c:a aac -ac 2 -ab 128k -c:s copy -disposition:s:0 default "/home/tomyang/Downloads/${1%AVC*}HEVC.10bit.mkv"
-ffmpeg -hwaccel qsv -c:v h264_qsv -playlist ${6:--1} -i bluray:"$1" -map v:0 -map a:${5:-0} -map s:${2:-0} -vf "vpp_qsv=cw=${7:-1920}:ch=${3:-1080}:format=p010" -c:v hevc_qsv -global_quality:v ${4:-18} -look_ahead 1 -preset veryfast -profile:v main10 -c:a libopus -ac 2 -b:a 128k -c:s copy -disposition:s:0 default "/home/tomyang/Downloads/upload/${1%AVC*}HEVC.10bit.Opus.2.0.mkv"
+#1:filename 2:subtrack 3:crop:y 4:quality 5:audiotrack 6:crop:x
+echo "playlist:"
+read PLAYLIST
+if [ $PLAYLIST ]
+then
+  PL="-playlist $PLAYLIST"
+fi
+FILE=/home/tomyang/upload/${1%.Blu*}.BluRay.HEVC.10bit.Opus.5.1.mkv
+if [[ $1 == *.mkv ]]
+then
+  INPUT=$1
+else
+  INPUT=bluray:"$1"
+fi
+echo "crop:y: (1080)"
+read CH
+echo "quality: (18)"
+read QUALITY
+echo "audiochannels: (6)"
+read AC
+echo "audiotrack: (0)"
+read AUDIOTRACK
+echo "crop:x: (1920)"
+read CW
+echo "audio language: (en)"
+read ALANG
+ffmpeg -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv $PL -i $INPUT -map v:0 -map a:${AUDIOTRACK:-0} -map s? -vf "vpp_qsv=cw=${CW:-1920}:ch=${CH:-1080}:format=p010" -c:v hevc_qsv -async_depth 16 -global_quality:v ${QUALITY:-18} -look_ahead 1 -preset veryslow -profile:v main10 -c:a libopus -ac ${AC:-6} -c:s copy -disposition:s:0 default -metadata:s:a language=${ALANG:-en} $FILE
+if [ $PLAYLIST ]
+then
+  bdinfo -c -p $PLAYLIST $1 > chapters.xml
+  mkvpropedit $FILE --chapters chapters.xml
+fi
