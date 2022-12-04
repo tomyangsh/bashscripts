@@ -1,11 +1,12 @@
-#1:filename 2:subtrack 3:crop:y 4:quality 5:audiotrack 6:crop:x
+#!/usr/bin/bash
+# -*- coding: utf-8 -*-
 echo "playlist:"
 read PLAYLIST
 if [ $PLAYLIST ]
 then
   PL="-playlist $PLAYLIST"
 fi
-FILE=/home/tomyang/upload/${1%.Blu*}.BluRay.HEVC.10bit.Opus.5.1.mkv
+FILE=${1%.Blu*}.BluRay.HEVC.10bit.DDP5.1.mkv
 if [[ $1 == *.mkv ]]
 then
   INPUT=$1
@@ -16,17 +17,8 @@ echo "crop:y: (1080)"
 read CH
 echo "quality: (18)"
 read QUALITY
-echo "audiochannels: (6)"
-read AC
 echo "audiotrack: (0)"
 read AUDIOTRACK
 echo "crop:x: (1920)"
 read CW
-echo "audio language: (en)"
-read ALANG
-ffmpeg -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv $PL -i $INPUT -map v:0 -map a:${AUDIOTRACK:-0} -map s? -vf "vpp_qsv=cw=${CW:-1920}:ch=${CH:-1080}:format=p010" -c:v hevc_qsv -async_depth 16 -global_quality:v ${QUALITY:-18} -look_ahead 1 -preset veryslow -profile:v main10 -c:a libopus -ac ${AC:-6} -c:s copy -disposition:s:0 default -metadata:s:a language=${ALANG:-en} $FILE
-if [ $PLAYLIST ]
-then
-  bdinfo -c -p $PLAYLIST $1 > chapters.xml
-  mkvpropedit $FILE --chapters chapters.xml
-fi
+ffmpeg -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv $PL -i $INPUT -map v:0 -map a:${AUDIOTRACK:-0} -map s? -vf "vpp_qsv=cw=${CW:-1920}:ch=${CH:-1080}:format=p010" -c:v hevc_qsv -async_depth 16 -global_quality:v ${QUALITY:-18} -look_ahead 1 -profile:v main10 -c:a eac3 -c:s copy $FILE

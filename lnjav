@@ -1,2 +1,2 @@
-ln *-*/hhd800.com@*.mp4 .
-for i in hhd800.com@*.mp4; do mv $i ${i#hhd800.com@}; done
+ln *-*/hhd800.com@*.mp4 jav/
+for i in jav/hhd800.com@*.mp4; do mv $i jav/${i#jav/hhd800.com@}; done
