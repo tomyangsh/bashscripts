@@ -9,8 +9,6 @@ then
 fi
 echo "title num (1)"
 read TITLE_NUM
-echo "parts"
-read PARTS
 echo "subtrack (0)"
 read SUBTRACK
 echo "audiotrack (0)"
@@ -19,4 +17,4 @@ echo "title"
 read TITLE
 echo "year"
 read YEAR
-for ((i=1; i<=PARTS; i++)); do cat "${1}"VIDEO_TS/VTS_0${TITLE_NUM:-1}_$i.VOB; done | ffmpeg -fflags +genpts -probesize 250M -analyzeduration 250M -canvas_size 720x${HIGHT:-576} -i - -palette "000000, eaeaea, 000000, 000000, 828282, 828282, 828282, ffffff, 828282, bababa, 828282, 828282, 828282, 828282, 828282, 828282" -map v -map a:${AUDIOTRACK:-0} -map s:${SUBTRACK:-0} -c:v copy -c:a copy -c:s dvdsub ${TITLE}.${YEAR}.${FORMAT:-PAL}.DVD.REMUX.DD5.1.mkv
+for i in "${1}"VIDEO_TS/VTS_0${TITLE_NUM:-1}_*.VOB; do if [[ $i != *0.VOB ]]; then cat "$i"; fi; done | ffmpeg -fflags +genpts -probesize 250M -analyzeduration 250M -canvas_size 720x${HIGHT:-576} -i - -palette "000000, eaeaea, 000000, 000000, 828282, 828282, 828282, ffffff, 828282, bababa, 828282, 828282, 828282, 828282, 828282, 828282" -map v -map a:${AUDIOTRACK:-0} -map s:${SUBTRACK:-0} -c:v copy -c:a copy -c:s dvdsub ${TITLE}.${YEAR}.${FORMAT:-PAL}.DVD.REMUX.DD5.1.mkv
