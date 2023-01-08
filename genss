@@ -1,0 +1,9 @@
+#!/bin/bash
+FILENAME="$1"
+NUM=${2:-4}
+MIN=3
+for i in $(seq 1 $NUM)
+do
+  ffmpeg -ss ${MIN}:00 -i "$FILENAME" -frames:v 1 "$MIN.png" 2>/dev/null
+  MIN=$(($MIN+3))
+done
