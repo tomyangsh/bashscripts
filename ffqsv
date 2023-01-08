@@ -15,10 +15,10 @@ else
 fi
 echo "crop:y: (1080)"
 read CH
-echo "quality: (18)"
-read QUALITY
+echo "mbps: (10)"
+read BITRATE
 echo "audiotrack: (0)"
 read AUDIOTRACK
 echo "crop:x: (1920)"
 read CW
-ffmpeg -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv $PL -i $INPUT -map v:0 -map a:${AUDIOTRACK:-0} -map s? -vf "vpp_qsv=cw=${CW:-1920}:ch=${CH:-1080}:format=p010" -c:v hevc_qsv -async_depth 16 -global_quality:v ${QUALITY:-18} -look_ahead 1 -profile:v main10 -c:a eac3 -c:s copy $FILE
+ffmpeg -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv $PL -i $INPUT -map v:0 -map a:${AUDIOTRACK:-0} -map s? -vf "vpp_qsv=cw=${CW:-1920}:ch=${CH:-1080}:format=p010" -c:v hevc_qsv -async_depth 16 -b:v ${BITRATE:-10}M -look_ahead 1 -extbrc 1 -profile:v main10 -c:a eac3 -c:s copy $FILE
