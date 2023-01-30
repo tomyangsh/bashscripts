@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+# -*- coding: utf-8 -*-
+echo "pal/ntsc (pal)"
+read FORMAT
+if [ $FORMAT ]
+then
+  FORMAT="NTSC"
+  HIGHT="480"
+fi
+echo "title num (1)"
+read TITLE_NUM
+echo "audiotrack (0)"
+read AUDIOTRACK
+echo "title"
+read TITLE
+echo "year"
+read YEAR
+for i in "${1}"VIDEO_TS/VTS_0${TITLE_NUM:-1}_*.VOB; do if [[ $i != *0.VOB ]]; then cat "$i"; fi; done | ffmpeg -hide_banner -hwaccel qsv -hwaccel_output_format qsv -probesize 250M -analyzeduration 500M -canvas_size 720x${HIGHT:-576} -ifo_palette "${1}"VIDEO_TS/VTS_0${TITLE_NUM:-1}_0.IFO -i - -map v -map a:${AUDIOTRACK:-0} -map s? -c:v hevc_qsv -b:v 2500K -c:a copy -c:s dvdsub ${TITLE}.${YEAR}.${FORMAT:-PAL}.mkv
