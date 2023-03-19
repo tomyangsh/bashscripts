@@ -7,12 +7,11 @@ then
 else
   INPUT=bluray:$1
 fi
-RATIO=$(ffprobe "${INPUT}" -show_streams 2>/dev/null|grep display_aspect_ratio|sed "s/display_aspect_ratio=//")
 FPS=$(($(ffprobe "${INPUT}" -show_streams|grep r_frame_rate|head -n 1|sed "s/r_frame_rate=//")))
 if [[ $FPS == 25 ]]
 then
   FORMAT="PAL"
   HIGHT="576"
 fi
-FILE=$(echo $1|sed -E -e "s/.+\/(.+)/\1/" -e "s/(.+\.[0-9]{4}\.).+/\1${FORMAT:-NTSC}.mkv/")
-ffmpeg -hide_banner -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv -i "$INPUT" -map v:0 -map a:0 -map s -aspect ${RATIO} -vf "vpp_qsv=w=720:h=${HIGHT:-480}" -colorspace:v "bt709" -color_primaries:v "bt709" -color_trc:v "bt709" -color_range:v "tv" -c:v hevc_qsv -b:v 2500K -c:a eac3 -ac 2 -c:s copy "${FILE}"
+FILE=$(echo $1|sed -E -e "s/.+\/(.+)/\1/" -e "s/(.+\.[0-9]{4}\.).*/\1${FORMAT:-NTSC}.mkv/")
+ffmpeg -hide_banner -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv -i "$INPUT" -map v:0 -map a:${2:-0} -map s -aspect 16:9 -vf "vpp_qsv=w=720:h=${HIGHT:-480}" -colorspace:v "bt709" -color_primaries:v "bt709" -color_trc:v "bt709" -color_range:v "tv" -c:v hevc_qsv -b:v 2500K -c:a eac3 -ac 2 -c:s copy "${FILE}"
