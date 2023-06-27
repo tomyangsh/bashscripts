@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+# -*- coding: utf-8 -*-
+set -x
+if [[ $1 == *.mkv ]]
+then
+  INPUT=$1
+else
+  INPUT=bluray:$1
+fi
+FPS=$(($(ffprobe "${INPUT}" -show_streams|grep r_frame_rate|head -n 1|sed "s/r_frame_rate=//")))
+if [[ $FPS == 25 ]]
+then
+  FORMAT="PAL"
+  HIGHT="576"
+fi
+FILE=$(echo $1|sed -E -e "s/.+\/(.+)/\1/" -e "s/(.+\.[0-9]{4}\.).*/\1${FORMAT:-NTSC}.mkv/")
+ffmpeg -hide_banner -hwaccel vaapi -hwaccel_output_format vaapi -i "$INPUT" -map v:0 -map a:${2:-0} -map s -aspect 16:9 -vf "scale_vaapi=w=720:h=${HIGHT:-480}:format=p010" -colorspace:v "bt709" -color_primaries:v "bt709" -color_trc:v "bt709" -color_range:v "tv" -c:v hevc_vaapi -b:v 2500K -c:a eac3 -ac 2 -c:s copy "${FILE}"
