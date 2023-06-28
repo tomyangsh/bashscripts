@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 # -*- coding: utf-8 -*-
+LIBVA_DRIVER_NAME=iHD
 echo "playlist:"
 read PLAYLIST
 if [ $PLAYLIST ]

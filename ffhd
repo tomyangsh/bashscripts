@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+# -*- coding: utf-8 -*-
+echo "playlist:"
+read PLAYLIST
+if [ $PLAYLIST ]
+then
+  PL="-playlist $PLAYLIST"
+fi
+FILE=${1%.Blu*}.BluRay.HEVC.10bit.DDP5.1.mkv
+if [[ $1 == *.mkv ]]
+then
+  INPUT=$1
+else
+  INPUT=bluray:"$1"
+fi
+echo "crop:y: (1080)"
+read CH
+echo "mbps: (6)"
+read BITRATE
+echo "audiotrack: (0)"
+read AUDIOTRACK
+echo "crop:x: (1920)"
+read CW
+if [ $CH ]; then
+	CROP=h=$CH
+elif [ $CW ]; then
+	CROP=w=$CW
+else
+	CROP=h=1080
+fi
+
+ffmpeg -hwaccel vaapi -hwaccel_output_format vaapi $PL -i $INPUT -map v:0 -map a:${AUDIOTRACK:-0} -map s? -vf "crop=${CROP},scale_vaapi=${CROP}:format=p010,setsar=sar=1" -c:v hevc_vaapi -async_depth 4 -b:v ${BITRATE:-6}M -c:a eac3 -c:s copy $FILE
