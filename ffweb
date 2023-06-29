@@ -5,9 +5,9 @@ set -x
 OUTPUT=${1%mkv}mp4
 
 if [ -f "${1%mkv}srt" ]; then
-	ffmpeg -hide_banner -init_hw_device vaapi -i "$1" -vf "subtitles="${1%mkv}srt":force_style='Fontname=Sarasa Gothic SC Semibold,Fontsize=20',hwupload" -c:v hevc_vaapi -b:v 4000K -ac 2 "$OUTPUT"
+	ffmpeg -hide_banner -init_hw_device vaapi -i "$1" -vf "subtitles="${1%mkv}srt":force_style='Fontsize=20',hwupload" -c:v hevc_vaapi -b:v 4000K -ac 2 "$OUTPUT"
 elif [ -f "${1%mkv}ass" ]; then
 	ffmpeg -hide_banner -init_hw_device vaapi -i "$1" -vf "subtitles="${1%mkv}ass",hwupload" -c:v hevc_vaapi -b:v 4000K -ac 2 "$OUTPUT"
 else
-	ffmpeg -hide_banner -init_hw_device vaapi -i "$1" -vf "subtitles=${1}:si=${2:-0}:force_style='Fontname=Sarasa Gothic SC Semibold,Fontsize=20',hwupload" -c:v hevc_vaapi -b:v 4000K -ac 2 "$OUTPUT"
+	ffmpeg -hide_banner -init_hw_device vaapi -i "$1" -vf "subtitles=${1}:si=${2:-0}:force_style='Fontsize=20',hwupload" -c:v hevc_vaapi -b:v 4000K -ac 2 "$OUTPUT"
 fi
